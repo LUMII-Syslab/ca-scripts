@@ -14,6 +14,14 @@
 export PATH=/usr/bin:$PATH
 export DIR=$(dirname $0)
 export CA_ALIAS=$1
+if [ -z $CA_ALIAS ]; then
+    echo -n "Please, specify the name (alias) of your CA [ca]: "
+    read INP
+    export CA_ALIAS=$INP
+fi
+if [ -z $CA_ALIAS ]; then
+    export CA_ALIAS=ca
+fi
 source $DIR/_vars.sh
 
 if [ -f $CA_KEY ] && [ -f $CA_TRUSTSTORE ]; then

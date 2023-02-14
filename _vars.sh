@@ -14,14 +14,6 @@ export DYLD_LIBRARY_PATH=/opt/oqs/lib
 # e.g., sphincssha256128frobust
 export SIG_ALG=sphincssha256128frobust
 
-if [ -z $CA_ALIAS ]; then
-    echo -n "Please, specify the name (alias) of your CA [ca]: "
-    read INP
-    export CA_ALIAS=$INP
-fi
-if [ -z $CA_ALIAS ]; then
-    export CA_ALIAS=ca
-fi
 
 export CA_KEY=$DIR/$CA_ALIAS/ca.key
 export CA_CRT=$DIR/$CA_ALIAS/ca.crt
