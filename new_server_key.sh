@@ -30,7 +30,7 @@ mkdir -p `dirname $SERVER_CRT`
 mkdir -p `dirname $SERVER_PEM`
 
 ${OQS_OPENSSL} req -new -newkey ${SIG_ALG} -keyout ${SERVER_KEY} -out ${SERVER_CSR} -nodes -config ${SERVER_CONFIG_FILE} ${OQS_OPENSSL_SERVER_REQ_ARGS}
-${OQS_OPENSSL} x509 -req -in server.csr -out ${SERVER_CRT} -CA ${CA_CRT} -CAkey ${CA_KEY} -CAcreateserial -days ${SERVER_DAYS} -extensions v3_req -extfile ${SERVER_CONFIG_FILE}
+${OQS_OPENSSL} x509 -req -in ${SERVER_CSR} -out ${SERVER_CRT} -CA ${CA_CRT} -CAkey ${CA_KEY} -CAcreateserial -days ${SERVER_DAYS} -extensions v3_req -extfile ${SERVER_CONFIG_FILE}
 
 rm ${SERVER_CSR}
 
