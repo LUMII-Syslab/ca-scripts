@@ -34,6 +34,38 @@ ${OQS_OPENSSL} x509 -req -in ${SERVER_CSR} -out ${SERVER_CRT} -CA ${CA_CRT} -CAk
 
 rm ${SERVER_CSR}
 
+
+echo "Exporting to the PKCS#12 format..."
+# Creating a .pfx (PKCS#12) file (an alternative to .pem)...
+${OQS_OPENSSL} pkcs12 -export -out ${SERVER_PFX} \
+		-password env:SERVER_KEYSTORE_PASS \
+		-name ${SERVER_ALIAS} -caname root -nodes -noiter -nomaciter \
+		-inkey $SERVER_KEY -in $SERVER_CRT -certfile $CA_CRT
+		# ^^^ use -noenc instead of -nodes in newer versions of openssl
+
+echo "Importing the server key+cert+cacert to the DER format..."
+export DER_TMP=`dirname $SERVER_KEY`/${SERVER_NAME}.der.tmp
+export PEM_TMP=`dirname $SERVER_KEY`/${SERVER_NAME}.pem.tmp
+
+cat ${CA_CRT} >${PEM_TMP}
+cat $SERVER_CRT >>${PEM_TMP}
+cat $SERVER_KEY >>${PEM_TMP}
+
+${OQS_OPENSSL} x509 -in $PEM_TMP -inform pem -out $DER_TMP -outform der ${OQS_OPENSSL_FLAGS}
+
+echo "Importing the server key+cert+cacert into Java key store..."
+#keytool -v -printcert -file $DER_TMP
+# old, cert only:
+# echo yes | keytool -importcert -alias ${SERVER_ALIAS} -keystore ${SERVER_KEYSTORE} -storepass ${SERVER_KEYSTORE_PASS} -file $DER_TMP
+# does not work:
+# keytool -importkeystore -srckeystore ${SERVER_PFX} -srcstoretype pkcs12 -srcstorepass ${SERVER_KEYSTORE_PASS} -alias $SERVER_ALIAS -destkeystore ${SERVER_KEYSTORE} -deststoretype JKS -deststorepass ${SERVER_KEYSTORE_PASS}
+echo "Validating..."
+#keytool -keystore ${SERVER_KEYSTORE} -storepass ${SERVER_KEYSTORE_PASS} -v -list -storetype pkcs12 -alias ${SERVER_ALIAS}
+
+rm ${PEM_TMP}
+rm ${DER_TMP}
+
+echo "Creating .pem = .crt + .key..."
 cat ${SERVER_CRT} > ${SERVER_PEM}
 cat ${SERVER_KEY} >> ${SERVER_PEM}
 
