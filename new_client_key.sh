@@ -57,22 +57,6 @@ ${OQS_OPENSSL} pkcs12 -export -out ${CLIENT_PFX} \
 cat $CLIENT_CRT >${CLIENT_PEM}
 cat $CLIENT_KEY >>${CLIENT_PEM}
 
-#echo "Importing the client key+cert+cacert to the DER format..."
-#export DER_TMP=`dirname $CLIENT_KEY`/${CLIENT_NAME}.der.tmp
-#export PEM_TMP=`dirname $CLIENT_KEY`/${CLIENT_NAME}.pem.tmp
-
-
-#${OQS_OPENSSL} x509 -in $PEM_TMP -inform pem -out $DER_TMP -outform der ${OQS_OPENSSL_FLAGS}
-
-#echo "Importing the client key+cert+cacert into Java key store..."
-#keytool -v -printcert -file $DER_TMP
-#echo yes | keytool -importcert -alias ${CLIENT_ALIAS} -keystore ${CLIENT_KEYSTORE} -storepass ${CLIENT_KEYSTORE_PASS} -file $DER_TMP
-#keytool -importkeystore -srckeystore ${CLIENT_PFX} -srcstoretype pkcs12 -destkeystore ${CLIENT_KEYSTORE} -deststoretype JKS -deststorepass ${CLIENT_KEYSTORE_PASS}
-#echo "Validating..."
-#keytool -keystore ${CLIENT_KEYSTORE} -storepass ${CLIENT_KEYSTORE_PASS} -v -list -storetype pkcs12 -alias ${CLIENT_ALIAS}
-#rm ${PEM_TMP}
-#rm ${DER_TMP}
-
 echo "We are done."
 echo "Deployable files:"
 echo " * ${CA_TRUSTSTORE} - CA trust store in the Java key store format"

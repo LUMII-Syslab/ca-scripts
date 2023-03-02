@@ -53,15 +53,6 @@ cat $SERVER_KEY >>${PEM_TMP}
 
 ${OQS_OPENSSL} x509 -in $PEM_TMP -inform pem -out $DER_TMP -outform der ${OQS_OPENSSL_FLAGS}
 
-echo "Importing the server key+cert+cacert into Java key store..."
-#keytool -v -printcert -file $DER_TMP
-# old, cert only:
-# echo yes | keytool -importcert -alias ${SERVER_ALIAS} -keystore ${SERVER_KEYSTORE} -storepass ${SERVER_KEYSTORE_PASS} -file $DER_TMP
-# does not work:
-# keytool -importkeystore -srckeystore ${SERVER_PFX} -srcstoretype pkcs12 -srcstorepass ${SERVER_KEYSTORE_PASS} -alias $SERVER_ALIAS -destkeystore ${SERVER_KEYSTORE} -deststoretype JKS -deststorepass ${SERVER_KEYSTORE_PASS}
-echo "Validating..."
-#keytool -keystore ${SERVER_KEYSTORE} -storepass ${SERVER_KEYSTORE_PASS} -v -list -storetype pkcs12 -alias ${SERVER_ALIAS}
-
 rm ${PEM_TMP}
 rm ${DER_TMP}
 
