@@ -105,9 +105,9 @@ echo "#!/bin/bash" > $CA_VARS
 echo "" >> $CA_VARS
 echo "export SIG_ALG=${SIG_ALG}" >> $CA_VARS
 echo "export CA_CONFIG_FILE=\`dirname \$CA_KEY\`/ca.cnf" >> $CA_VARS
-echo "export OQS_OPENSSL_CA_REQ_ARGS=${OQS_OPENSSL_CA_REQ_ARGS}" >> $CA_VARS
-echo "export OQS_OPENSSL_CLIENT_REQ_ARGS=${OQS_OPENSSL_CLIENT_REQ_ARGS}" >> $CA_VARS
-echo "export OQS_OPENSSL_SERVER_REQ_ARGS=${OQS_OPENSSL_SERVER_REQ_ARGS}" >> $CA_VARS
+echo "export OQS_OPENSSL_CA_REQ_ARGS=\"${OQS_OPENSSL_CA_REQ_ARGS}\"" >> $CA_VARS
+echo "export OQS_OPENSSL_CLIENT_REQ_ARGS=\"${OQS_OPENSSL_CLIENT_REQ_ARGS}\"" >> $CA_VARS
+echo "export OQS_OPENSSL_SERVER_REQ_ARGS=\"${OQS_OPENSSL_SERVER_REQ_ARGS}\"" >> $CA_VARS
 chmod +x $CA_VARS
 
 echo "Generating CA key pair..."
