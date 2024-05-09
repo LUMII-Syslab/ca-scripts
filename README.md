@@ -1,6 +1,6 @@
 # Certification Authority (CA) Scripts
 
-by Sergejs Kozlovičs, 2022-2023
+by Sergejs Kozlovičs, 2022-2024
 
 ## Prerequisites
 
@@ -13,13 +13,22 @@ by Sergejs Kozlovičs, 2022-2023
   * **Deploy** the generated `ca.truststore` file when Java trust store file is needed.
   
   * **Deploy** the generated `ca.crt` file when a PEM file is needed. For example, this file can be used to  configure HAProxy to authenticate clients signed by our CA.
-  
 * `ca_renew.sh` re-generates the CA root key pair and its self-signed CA certificate. This script has to be called when the previous CA key pair is about to expire.
+* `new_server_key.sh` generates and signs (by our CA) a server certificate.  The first three arguments specify:
+  * the CA name,
+  * the server name (no spaces or special symbols, please!), which is the subdirectory name, where we will put the generated certs/keys;
+  * the openssl configuration file (e.g., `server.cnf` ).
+> **Deploy** the generated `server.pem` file to your server/proxy. That file contains both the server private key and the signed certificate. Don't forget to restart the server/proxy.
 
-* `new_server_key.sh` generates and signs (by our CA) a server certificate.  The first four arguments specify the CA name, the openssl configuration file (e.g., `server.cnf` ), the certificate expiration time (in days), and the destination .pem file to deploy/install at your web server or proxy.
-  * The destination .pem file will contain both the server private key and the signed certificate. Configure your server/proxy to use that file and restart the server/proxy.
-  
-* `new_client_key.sh` generates and signs (by our CA) a client certificate. The first three arguments specify the CA name, the user name (no spaces or special symbols, please!) and the certificate expiration time (in days). Each user should have their own client certificate.
-  * **Deploy** the `token.keystore` file (containing the client private key and its signed certificate) when a Java key store file is needed.
-  * **Deploy** the `client.key` and `client.crt` files (containing the client private key and its signed certificate) when PEM files are needed.
+* `new_client_key.sh` generates and signs (by our CA) a client certificate. Each user should have their own client key and certificate. The first three arguments specify:
+  * the CA name,
+  * the user name (no spaces or special symbols, please!),  which is the subdirectory name, where we will put the generated certs/keys;
+  * the openssl configuration file (e.g., `client.cnf` ).
+> **Deploy** the `token.keystore` file (containing the client private key and its signed certificate) when a Java key store file is needed.
+> **Deploy** the `client.key` and `client.crt` files (containing the client private key and its signed certificate) when PEM files are needed.
 
+* `sign_client_csr.sh` signs a CSR (certificate signing request) provided by a 3rd party for signing client certificates, when we do not own the private key.  The first two arguments specify:
+  * the CA name,
+  * the CSR file (usually, with the .csr or .pem extension).
+
+> **Deploy** the corresponding generated .crt file to your client.
