@@ -7,6 +7,7 @@ if [ "$1" = "" ]; then
   echo "The EC-specific encoding is the enconding containing both"
   echo "the \"-----BEGIN EC PARAMETERS-----\" section and"
   echo "the \"-----BEGIN EC PRIVATE KEY-----\" section."
+  echo "The latter section is described in RFC 5915, https://www.rfc-editor.org/rfc/rfc5915"
   echo ""
   echo "Usage: $0 ec-key-file"
   exit
