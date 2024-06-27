@@ -21,7 +21,10 @@ set -Eeuxo pipefail
 #     SERVER_KEYSTORE_PASS
 
 #export OQS_OPENSSL=/opt/oqs/bin/openssl
-export OQS_OPENSSL=/usr/local/bin/openssl
+export OQS_OPENSSL=`which openssl`
+if [ -z $OQS_OPENSSL ]; then
+  OQS_OPENSSL=/usr/local/bin/openssl
+fi
 export OQS_OPENSSL_FLAGS=
 # For macOS, we may need to specify additional path for dylibs (@rpath):
 #export DYLD_LIBRARY_PATH=/opt/oqs/lib
