@@ -111,7 +111,7 @@ echo "export OQS_OPENSSL_SERVER_REQ_ARGS=\"${OQS_OPENSSL_SERVER_REQ_ARGS}\"" >> 
 chmod +x $CA_VARS
 
 echo "Generating CA key pair..."
-${OQS_OPENSSL} req -x509 -new -newkey $SIG_ALG -keyout $CA_KEY -out $CA_CRT -nodes -days $CA_DAYS -config $CA_CONFIG_FILE ${OQS_OPENSSL_CA_REQ_ARGS} ${OQS_OPENSSL_FLAGS}
+${OQS_OPENSSL} req -x509 -new -newkey $SIG_ALG -keyout $CA_KEY -out $CA_CRT -nodes -days $CA_DAYS -config $CA_CONFIG_FILE -extensions v3_ca ${OQS_OPENSSL_CA_REQ_ARGS} ${OQS_OPENSSL_FLAGS}
 cat $CA_CRT >> $ALL_CA_PEM
 
 echo "Converting CA certificate to the DER format..."
